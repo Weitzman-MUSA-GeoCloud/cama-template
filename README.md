@@ -105,7 +105,7 @@ The tables in `source` are external tables. These are your warehouse's raw mater
 
 There's a correlated table in `core` for each table in `source`. Even though external tables are convenient for getting data into BigQuery, they're not the most efficient to query from. So, we copy the data into a table in `core` and query from there. There may be some cleaning and normalization useful that you do to the source data as you copy it over, such as ensuring that numbers and dates are stored in the correct format.
 
-In addition to the fields from the raw tables, each of the core tables will have a cleaned and standardized `property_id` string field (derived from the OPA or BRT number) that can be used as the unique identifier for a property across the tables.
+In addition to the fields from the raw tables, each of the core tables will have a cleaned and standardized `property_id` string field (derived from the `parcel_number` in OPA datasets, or the `brt_id` in PWD datasets) that can be used as the unique identifier for a property across the tables.
 
 - `core.opa_properties`
 - `core.opa_assessments`
@@ -172,7 +172,7 @@ Each of these tasks download data from some source and store the data in `musa50
 
 ### Preparing (i.e. little-t transforming)
 
-Each of these tasks read raw stored data from GCS and converts it into a clean CSV file in `musa5090s25-team<N>-prepared_data`.
+Each of these tasks read raw stored data from GCS and converts it into a clean CSV, JSON-L, or Parquet file in `musa5090s25-team<N>-prepared_data`.
 
 - `prepare-opa-properties`
 - `prepare-opa-assessments`
@@ -200,9 +200,9 @@ Each of these tasks reads data from the `core` dataset, performs some analysis o
 
 ## Cloud Run jobs
 
-To run the assessment prediction across all the properties, we use a Cloud Run job named `predict-current-assessments`. The script reads the `derived.assessment_inputs` table and writes the results to the `derived.current_assessments` table.
+To run the assessment prediction across all the properties, we can use a Cloud Run job named `predict-current-assessments`. The script reads the `derived.assessment_inputs` table and writes the results to the `derived.current_assessments` table.
 
-To create the vector tiles for the assessment review dashboard, we use a Cloud Run job named `generate-property-map-tiles`. The script downloads the `property_tile_info.geojson` file from the `musa5090s25-team<N>-temp_data` bucket, generates vector tiles, and writes the results to the `musa5090s25-team<N>-public/tiles` folder.
+To create the vector tiles for the assessment review dashboard, we can use a Cloud Run job named `generate-property-map-tiles`. The script downloads the `property_tile_info.geojson` file from the `musa5090s25-team<N>-temp_data` bucket, generates vector tiles, and writes the results to the `musa5090s25-team<N>-public/tiles` folder.
 
 ## Workflows
 
