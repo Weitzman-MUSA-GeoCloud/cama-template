@@ -105,7 +105,7 @@ The tables in `source` are external tables. These are your warehouse's raw mater
 
 There's a correlated table in `core` for each table in `source`. Even though external tables are convenient for getting data into BigQuery, they're not the most efficient to query from. So, we copy the data into a table in `core` and query from there. There may be some cleaning and normalization useful that you do to the source data as you copy it over, such as ensuring that numbers and dates are stored in the correct format.
 
-In addition to the fields from the raw tables, each of the core tables will have a cleaned and standardized `property_id` string field (derived from the `parcel_number` in OPA datasets, or the `brt_id` in PWD datasets) that can be used as the unique identifier for a property across the tables.
+In addition to the fields from the raw tables, each of the core tables will have a cleaned and standardized zero-padded 9-digit `property_id` string field (derived from the `parcel_number` in OPA datasets, or the `brt_id` in PWD datasets) that can be used as the unique identifier for a property across the tables.
 
 - `core.opa_properties`
 - `core.opa_assessments`
